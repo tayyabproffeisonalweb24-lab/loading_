@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxury Loading Animation</title>
+
+<style>
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    color: #f8f4e9;
+    background:
+        radial-gradient(ellipse at center,
+        #202018 0%, #0c0c0b 48%, #050505 100%);
+}
+
+/* ===== LOADING CARD ===== */
+.loader-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 45px 25px;
+    text-align: center;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.025);
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+    animation: appear 1s ease;
+}
+
+/* ===== BRAND ===== */
+.brand {
+    color: #d4af37;
+    font-size: 13px;
+    letter-spacing: 6px;
+    font-weight: bold;
+    margin-bottom: 35px;
+}
+
+/* ===== GOLDEN SPINNER ===== */
+.spinner {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 30px;
+    border: 3px solid rgba(212, 175, 55, 0.12);
+    border-top: 3px solid #f6d878;
+    border-right: 3px solid #d4af37;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.12);
+    position: relative;
+}
+
+.spinner::after {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    border-bottom-color: #d4af37;
+    border-radius: 50%;
+    animation: rotate 2s linear infinite reverse;
+}
+
+/* ===== TEXT ===== */
+h1 {
+    font-size: 27px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    color: #99968c;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 30px;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-track {
+    width: 100%;
+    height: 4px;
+    background: #29271f;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 20px;
+    background: linear-gradient(
+        90deg, #9b7620, #ffe7a0, #d4af37
+    );
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+    transition: width 0.08s linear;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    color: #aaa69a;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+#percentage {
+    color: #e7c65d;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 480px) {
+    .loader-container {
+        width: calc(100% - 36px);
+        padding: 38px 22px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .spinner {
+        width: 85px;
+        height: 85px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="loader-container">
+
+    <div class="brand">L O A D I N G</div>
+
+    <div class="spinner"></div>
+
+    <h1 id="heading">Preparing Experience</h1>
+
+    <p class="subtitle" id="message">
+        Please wait while we prepare everything...
+    </p>
+
+    <div class="progress-track">
+        <div class="progress-bar" id="progress"></div>
+    </div>
+
+    <div class="progress-info">
+        <span id="status">INITIALIZING</span>
+        <span id="percentage">0%</span>
+    </div>
+
+</div>
+
+<script>
+// ===== LOADING PROGRESS =====
+const progress = document.getElementById("progress");
+const percentage = document.getElementById("percentage");
+const status = document.getElementById("status");
+const heading = document.getElementById("heading");
+const message = document.getElementById("message");
+
+let count = 0;
+
+const loading = setInterval(() => {
+    // Random increments for a natural visual effect
+    count = Math.min(100, count + Math.ceil(Math.random() * 3));
+
+    progress.style.width = count + "%";
+    percentage.textContent = count + "%";
+
+    if (count < 35) {
+        status.textContent = "INITIALIZING";
+    } else if (count < 70) {
+        status.textContent = "LOADING ASSETS";
+    } else if (count < 100) {
+        status.textContent = "ALMOST READY";
+    } else {
+        clearInterval(loading);
+
+        status.textContent = "COMPLETE";
+        heading.textContent = "Experience Ready";
+        message.textContent = "Everything is ready to go.";
+    }
+}, 65);
+</script>
+
+</body>
+</html>
